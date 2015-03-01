@@ -36,6 +36,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'main',
+    'tictactoe',
+    'user',
+    'crispy_forms'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -81,3 +85,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, "templates"),)
+
+LOGIN_URL = 'boardgames_login'
+LOGOUT_URL = 'boardgames_logout'
+LOGIN_REDIRECT_URL = 'user_home'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
