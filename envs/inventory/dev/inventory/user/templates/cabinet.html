@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+        <!--{{user.first_name}}<br>-->
+        <!--{{user.last_name}}<br>-->
+        <!--{{user.email}}<br>-->
+        <!--{{user.id}}<br>-->
+        In the cabinet<br>
+        {{group}}<br>
+        <!--{% for g in groups %}-->
+            <!--{{g}}-->
+        <!--{% endfor %}-->
+        {% if request.user|has_group:"mygroup" %}
+            <p>User belongs to my group
+        {% else %}
+            <p>User doesn't belong to mygroup</p>
+        {% endif %}
+
+    </div>
+
+
+
+{% endblock content %}

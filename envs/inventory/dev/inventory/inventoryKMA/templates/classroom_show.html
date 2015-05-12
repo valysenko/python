@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+<!--{% load crispy_forms_tags %}-->
+{% load inventoryKMA_extras %}
+
+{% block content %}
+
+    <script type="text/javascript">
+        var del = function(one) {
+            $.ajax({
+                type: 'GET',
+                url:   'http://localhost:8000'+'/unit_item/delete/'+one+'',
+                contentType: 'application/json',
+                async: true,
+                success: function(data) {
+                    $(""+'#img1'+one+"").remove();
+                    $(""+'#img2'+one+"").remove();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                }
+            });
+        }
+    </script>
+
+
+    <div  style="margin-left:10px;margin-right:10px;text-align:center;margin-bottom:50px;">
+
+        <h2>{{classroom.number}} edit </h2>
+
+        <div style="text-align:center;margin:auto;padding:auto;width:{{width}}px">
+            {% for workplace in classroom.workplace_set.all %}
+                 <div style="background-color:#F8F8F8;padding-top:3px;margin:3px;float:left;border:2px solid lightgray;border-radius:3px; width:130px;height:130px;">
+
+                          <div style="padding-left:10px;width:135px;display:table-cell;vertical-align: top;height:105px;text-align:center">
+                              {% for unit_item in workplace.unititem_set.all %}
+
+                                  <div
+                                       onmouseover =
+                                               "$('#img1{{unit_item.id}}').css('display','none');
+                                                $('#img2{{unit_item.id}}').css('display','inline-block');"
+                                       onmouseout =
+                                               " $('#img1{{unit_item.id}}').css('display','inline-block');
+                                                       $('#img2{{unit_item.id}}').css('display','none');
+                                                       "
+                                          >
+
+                                       {% if unit_item %}
+                                            <span id="img1{{unit_item.id}}" style="float:left;margin:2px;width:30px;height:30px">
+
+                                                  <img  alt="number" style="width:30px;height:30px" src="{{ STATIC_URL }}images/{{unit_item.unit.name}}.png"/>
+
+                                           </span>
+
+                                          <span id="img2{{unit_item.id}}" style="margin:2px;width:30px;height:30px;display:none; float:left">
+                                             <!--<%--<a href="/admin/unititem/delete/${classroom.number}/${unit.id}">--%>-->
+                                                 <button onClick="del({{unit_item.id}})" class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
+                                                      data-target="#delete" ><span class="glyphicon glyphicon-trash"></span>
+                                                 </button>
+                                             <!--<%--</a>--%>-->
+                                          </span>
+                                       {% endif%}
+
+
+                                  </div>
+
+                              <!--<c:if test="${workplace.sequenceNumber%classroom.columns == 0}">-->
+                                <!--<div style="clear:left;height:0px;width:0px">-->
+                                <!--</div>-->
+                              <!--</c:if>-->
+
+                             {% endfor %}
+                          </div>
+                          <table style="text-align:center;width:130px">
+                              <tr>
+                                  <td style="text-align:center">
+                                        <a href="{% url 'unit_item_new' workplace.id %}">add</a>
+                                  </td>
+                              </tr>
+                          </table>
+                            <!--<%--<button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"--%>-->
+                                    <!--<%--data-target="#delete" ><span class="glyphicon glyphicon-trash"></span>--%>-->
+                            <!--<%--</button>--%>-->
+                    </div>
+
+
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock content %}

@@ -28,32 +28,43 @@
 
     <nav class="container-fluid navbar navbar-default">
         <div class="navbar-header">
-            {% if user.is_authenticated %}
-              <a class="navbar-brand" href="{% url 'inventory_index' %}">Inventory</a>
-            {% else %}
-              <a class="navbar-brand" href="{% url 'inventory_index' %}">Inventory</a>
+              <a class="navbar-brand" href="{% url 'redirect_to_main' %}">Inventory</a>
+        </div>
+
+        <div>
+            {% if perms.inventoryKMA.add_task %}
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Add <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="{% url 'add_task' %}">Task</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'add_classroom' %}">Classroom</a>
+                            </li>
+                            <li>
+                                <a href="">Add assistant from user</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             {% endif %}
         </div>
 
-         <ul class="nav navbar-nav">
-              {% if user.is_authenticated %}
-                <li><a href="">New Game</a></li>
-              {% endif %}
-         </ul>
-
          <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
-                <li><a href="  ">Logout</a></li>
+                <li><a href=" {% url 'inventory_logout' %} ">Logout</a></li>
             {% else %}
-                <li><a href="">Login</a></li>
+                <li><a href="{% url 'inventory_login' %}">Login</a></li>
             {% endif %}
          </ul>
     </nav>
 
-    <div class="container">
-        {% block content %}
-        {% endblock content %}
-    </div>
+
+    {% block content %}
+    {% endblock content %}
+
 
      <div class="footer navbar-fixed-bottom" style="text-align:center">
         <div class="panel-footer">Copyright 2015 © </div>

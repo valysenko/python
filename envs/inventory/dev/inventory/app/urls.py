@@ -13,12 +13,27 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url
+from django.conf.urls import include, url,patterns
 from django.contrib import admin
 
 admin.autodiscover()
 
 urlpatterns = [
     url(r'^$', 'index.views.index', name='inventory_index'), #index page
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^redirect/', include('user.urls')),
+    url(r'^', include('inventoryKMA.urls')),
+    url(r'^django_admin/', include(admin.site.urls)),
 ]
+
+
+urlpatterns += patterns(
+    'django.contrib.auth.views',
+
+    url(r'^login/$', 'login',
+        {'template_name': 'login.html'},
+        name='inventory_login'),
+
+    url(r'^logout/$', 'logout',
+        {'next_page': 'inventory_index'},
+        name='inventory_logout'),
+)
