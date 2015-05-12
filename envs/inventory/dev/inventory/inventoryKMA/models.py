@@ -65,13 +65,13 @@ class UnitItem(models.Model):
     id=models.AutoField(primary_key=True)
     number = models.CharField(validators=[MinLengthValidator(0)], max_length=15)
     workplace = models.ForeignKey(Workplace)
-    unit = models.OneToOneField(Unit)
+    unit = models.ForeignKey(Unit)
     objects = UnitItemManager()
 
 
 class Task(models.Model):
     id=models.AutoField(primary_key=True)
-    message = models.CharField(validators=[MinLengthValidator(0)], max_length=15)
+    message = models.CharField(validators=[MinLengthValidator(0)], max_length=600)
     status = models.CharField(validators=[MinLengthValidator(0)], max_length=15)
     assistant = models.ForeignKey(User, related_name="tasks", null=True)
     objects = TaskManager()

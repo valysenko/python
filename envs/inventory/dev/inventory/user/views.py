@@ -9,7 +9,7 @@ def redirect_to_main(request):
     if request.user.groups.filter(name='admin').exists():
         return redirect('/classrooms/list')
     elif request.user.groups.filter(name='assistant').exists():
-        return redirect('/assistant')
+        return redirect('/tasks/current')
     elif request.user.groups.filter(name='user').exists():
         return redirect('/user')
     return redirect('/')
@@ -57,6 +57,14 @@ def create_groups(request):
     permission = Permission.objects.get(codename='add_complaint')
     user_group.permissions.add(permission)
 
+    """
+    User creation
+    """
+    # assistant_group, created = Group.objects.get_or_create(name='assistant')
+    # user = User.objects.create_user(first_name="Vlad",last_name="Lysenko",email="stalkervlad2011@ukr.net",username="vlad")
+    # user.set_password("1")
+    # user.groups.add(assistant_group)
+    # user.save()
     return render(request, "cabinet.html")
 
 

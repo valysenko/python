@@ -1,0 +1,41 @@
+
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <div class="container">
+    <div><h3>Assistants list</h3></div>
+    <table class="table table-striped custab" style="min-width:400px;">
+        <thead>
+        <tr>
+            <td>
+                Name
+            </td>
+            <td>
+                Surname
+            </td>
+            <td>
+                Username
+            </td>
+
+            <td>
+                Email
+            </td>
+            <td>
+            </td>
+        </tr>
+        </thead>
+        {% for assistant in assistants %}
+            <tr>
+                <td>{{assistant.first_name}}</td>
+                <td>{{assistant.last_name}}</td>
+                <td>{{assistant.username}}</td>
+                <td>{{assistant.email}}</td>
+                <td>
+                        <a href="{% url 'delete_assistant' assistant.id %}">delete (make him user) </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock content %}

@@ -1,0 +1,28 @@
+
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <div class="container">
+    <div><h3>Unmanaged tasks list</h3></div>
+    <table class="table table-striped custab" style="min-width:400px;">
+        <thead>
+            <tr>
+                <td>
+                    Message
+                </td>
+                <td>
+                </td>
+            </tr>
+        </thead>
+        {% for task in tasks %}
+            <tr>
+                <td>{{task.message}}</td>
+                <td>
+                    <a href="{% url 'manage_task' task.id %}"> manage </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock content %}

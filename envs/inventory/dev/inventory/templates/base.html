@@ -49,6 +49,44 @@
                         </ul>
                     </li>
                 </ul>
+
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">View and manage <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="{% url 'classrooms_list' %}">Classrooms list</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'assistants_list' %}">Assistants list</a>
+                            </li>
+                            <li>
+                                <a href = ""> Complaints list </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'unmanaged_classrooms_list' %} ">Unmanaged classrooms</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'unmanaged_tasks_list' %}">Unmanaged tasks</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            {% endif %}
+
+            {% if perms.inventoryKMA.delete_task %}
+                 <ul class="nav navbar-nav">
+                    <li>
+                        <a href="{% url 'current_tasks' %}">Current tasks</a>
+                    </li>
+                 </ul>
+
+                 <ul class="nav navbar-nav">
+                    <li>
+                        <a href="{% url 'finished_tasks' %}">Finished tasks</a>
+                    </li>
+                 </ul>
             {% endif %}
         </div>
 

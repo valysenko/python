@@ -1,12 +1,15 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views.generic import FormView
-from .forms import TaskForm, ClassroomForm, UnitItemForm
-from .models import  Workplace, Classroom, Unit,UnitItem
-from django.contrib.auth.models import User, Permission
+from .forms import TaskForm, ClassroomForm, UnitItemForm, UnmanagedClassroomForm, UnmanagedTaskForm
+from .models import  Workplace, Classroom, Unit, UnitItem, Task
+from django.contrib.auth.models import User, Permission, Group
 from django.db.models import Q
 import traceback
-# Create your views here.
+
+"""
+Views for admin
+"""
 
 def classrooms_list(request):
     classrooms = Classroom.objects.all()
@@ -21,6 +24,74 @@ def delete_unit_item(request, id):
     unit_item = UnitItem.objects.filter(pk=id).delete()
     return HttpResponse('')
 
+def unmanage_classroom(request,id):
+    classroom = Classroom.objects.get(pk=id)
+    classroom.assistant = None
+    classroom.save()
+    return redirect('/classrooms/list')
+
+def manage_classroom(request, id):
+    classroom = get_object_or_404(Classroom, pk=id)
+    if request.method == 'POST':
+        form = UnmanagedClassroomForm(request.POST)
+        if form.is_valid():
+            assistant = form.instance.assistant
+            classroom.assistant = assistant
+            classroom.save()
+            return redirect('/classrooms/list')
+        else:
+           return render(request, "manage_classroom.html", {'form': form})
+    else:
+        form = UnmanagedClassroomForm()
+        return render(request, "manage_classroom.html", {'form': form})
+
+def manage_task(request, id):
+    task = get_object_or_404(Task, pk=id)
+    if request.method == 'POST':
+        form = UnmanagedTaskForm(request.POST)
+        if form.is_valid():
+            assistant = form.instance.assistant
+            task.assistant = assistant
+            task.save()
+            return redirect('/task/unmanaged/list')
+        else:
+            return render(request, "manage_task.html", {'form': form})
+    else:
+        form = UnmanagedTaskForm()
+        return render(request, "manage_task.html", {'form': form})
+
+
+def unmanaged_classrooms_list(request):
+    classrooms = Classroom.objects.filter(assistant=None)
+    return render(request, "unmanaged_classrooms_list.html", {'classrooms':classrooms})
+
+def unmanaged_tasks_list(request):
+    tasks = Task.objects.filter(assistant=None)
+    return render(request, "unmanaged_tasks_list.html", {'tasks':tasks})
+
+def assistants_list(request):
+    perm = Permission.objects.get(codename='delete_task')
+    assistants = User.objects.filter(Q(groups__permissions=perm) | Q(user_permissions=perm) ).distinct()
+    return render(request, "assistants_list.html", {'assistants':assistants})
+
+def delete_assistant(request,id):
+    assistant = User.objects.get(pk=id)
+    assistant_group, created = Group.objects.get_or_create(name='assistant')
+    user_group, created1 = Group.objects.get_or_create(name='user')
+    assistant_group.user_set.remove(assistant)
+    assistant.groups.add(user_group)
+    tasks = Task.objects.filter(assistant=assistant)
+    classrooms = Classroom.objects.filter(assistant=assistant)
+
+    for task in tasks:
+        task.assistant=None
+        task.save()
+    for classroom in classrooms:
+        classroom.assistant=None
+        classroom.save()
+
+    assistant.save()
+    return redirect('/assistants/list')
 
 class UnitItemView(FormView):
     form_class = UnitItemForm
@@ -60,10 +131,6 @@ class TaskView(FormView):
     template_name = 'task.html'
 
     def get(self, request, *args, **kwargs):
-
-        perm = Permission.objects.get(codename='blogger')
-        users = User.objects.filter(Q(groups__permissions=perm) | Q(user_permissions=perm) ).distinct()
-
         form = self.form_class()
         context = self.get_context_data(**kwargs)
         context['form'] = form
@@ -71,9 +138,10 @@ class TaskView(FormView):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            task = form.save()
-            # <process form cleaned data>
-            return redirect('/')
+            task = form.instance
+            task.status="in progress"
+            task.save()
+            return redirect('/redirect')
         # return self.render_to_response(context)
         return render(request, self.template_name, {'form': form})
 
@@ -95,6 +163,23 @@ class ClassroomView(FormView):
             for x in range(0, classroom.columns*classroom.rows):
                 classroom.workplace_set.add(Workplace(number=x+1))
             classroom.save()
-            return redirect('/')
+            return redirect('/redirect')
         return render(request, self.template_name, {'form': form})
 
+"""
+Views for assistant
+"""
+
+def in_progress_tasks_list(request):
+    tasks = Task.objects.filter(assistant=request.user,status="in progress")
+    return render(request, "current_tasks_list.html", {'tasks':tasks})
+
+def finished_tasks_list(request):
+    tasks = Task.objects.filter(assistant=request.user,status="finished").all()
+    return render(request, "finished_tasks_list.html", {'tasks':tasks})
+
+def finish_task(request,id):
+    task = Task.objects.get(pk=id)
+    task.status = "finished"
+    task.save()
+    return redirect('/tasks/current')
