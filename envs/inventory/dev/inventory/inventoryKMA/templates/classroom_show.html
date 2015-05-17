@@ -33,7 +33,6 @@
         <div style="text-align:center;margin:auto;padding:auto;width:{{width}}px">
             {% for workplace in classroom.workplace_set.all %}
                  <div style="background-color:#F8F8F8;padding-top:3px;margin:3px;float:left;border:2px solid lightgray;border-radius:3px; width:130px;height:130px;">
-
                           <div style="padding-left:10px;width:135px;display:table-cell;vertical-align: top;height:105px;text-align:center">
                               {% for unit_item in workplace.unititem_set.all %}
 
@@ -48,6 +47,7 @@
                                           >
 
                                        {% if unit_item %}
+
                                             <span id="img1{{unit_item.id}}" style="float:left;margin:2px;width:30px;height:30px">
 
                                                   <img  alt="number" style="width:30px;height:30px" src="{{ STATIC_URL }}images/{{unit_item.unit.name}}.png"/>
@@ -65,16 +65,22 @@
 
                              {% endfor %}
                           </div>
-                          <table style="text-align:center;width:130px">
+                          <table style="text-align:center;width:135px;margin-top:-5px">
                               <tr>
-                                  <td style="text-align:center">
-                                        <a href="{% url 'unit_item_new' workplace.id %}">add</a>
+                                  <td  style="text-align:right;width:50%;padding-right:5px">
+                                        <a href="{% url 'unit_item_new' workplace.id %}">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                        </a>
+
+                                  </td>
+                                  <td  style="text-align:left;width:50%;padding-left:5px">
+                                      <span style="background-color: #d9534f" class="badge">
+                                       <a href="{% url 'complaints_workplace_list' workplace.id%}" style="color:white"> {{workplace.complaints.all|length}} </a>
+                                      </span>
                                   </td>
                               </tr>
+
                           </table>
-                            <!--<%--<button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"--%>-->
-                                    <!--<%--data-target="#delete" ><span class="glyphicon glyphicon-trash"></span>--%>-->
-                            <!--<%--</button>--%>-->
                     </div>
 
 

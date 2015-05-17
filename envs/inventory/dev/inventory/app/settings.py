@@ -40,7 +40,8 @@ INSTALLED_APPS = (
     'crispy_forms',
     'index',
     'user',
-    'inventoryKMA'
+    'inventoryKMA',
+    'debug_toolbar'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -117,3 +118,9 @@ LOGIN_REDIRECT_URL = 'redirect_to_main'
 
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'inventorykma@gmail.com'
+EMAIL_HOST_PASSWORD = 'invKM@15LBMZ1*0%W'

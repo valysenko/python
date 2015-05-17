@@ -2,9 +2,12 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <div class="adding" >
-        <h1>Manage task</h1>
-        <div class="well col-sm-6">
+    <div class="well" style="margin:auto;padding:auto;width:400px;margin-top:50px">
+        <fieldset>
+            <legend>
+                Manage task
+            </legend>
+        <div>
             <form action="" method="post">
                 {% csrf_token %}
                 {{ form|crispy }}
@@ -12,7 +15,7 @@
                             <span class="glyphicon glyphicon-plus"></span> Add
                 </button>
             </form>
-
         </div>
+        </fieldset>
     </div>
 {% endblock content %}

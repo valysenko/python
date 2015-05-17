@@ -1,6 +1,6 @@
 __author__ = 'vladyslav'
 from django import forms
-from .models import Task, Classroom, UnitItem
+from .models import Task, Classroom, UnitItem,Complaint
 from django.forms import ModelForm
 from django.contrib.auth.models import User, Permission
 from django.db.models import Q
@@ -42,3 +42,9 @@ class UnmanagedTaskForm(ModelForm):
         exclude = ['id', 'status', 'message']
     perm = Permission.objects.get(codename='delete_task')
     assistant = forms.ModelChoiceField(queryset=User.objects.filter(Q(groups__permissions=perm) | Q(user_permissions=perm) ).distinct())
+
+class ComplaintForm(ModelForm):
+    class Meta:
+        model = Complaint
+        exclude = ['id', 'workplace']
+    message = forms.CharField(widget=forms.Textarea)

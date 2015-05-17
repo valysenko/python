@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container" style="text-align:center;width:500px;">
+        <h3>Select classroom where is a problem</h3>
+        <div style="margin:auto;padding:auto;">
+            <ul class="list-group">
+                {% for classroom in classrooms%}
+                    <li class="list-group-item">
+                          <a href = "{% url 'classroom_for_user_show' classroom.number %}">Classroom {{classroom.number}} </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+
+
+{% endblock content %}

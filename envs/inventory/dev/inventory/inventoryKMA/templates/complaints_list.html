@@ -1,0 +1,35 @@
+
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+   <div class="container">
+    <div><h3>Complaints list</h3></div>
+    <table class="table table-striped custab" style="min-width:400px;">
+        <thead>
+            <tr>
+                <td>
+                    Message
+                </td>
+                <td>
+                    Classroom
+                </td>
+                <td>
+                    Workplace
+                </td>
+                <td>
+                </td>
+
+            </tr>
+        </thead>
+        {% for complaint in complaints %}
+            <tr>
+                <td>{{complaint.message}}</td>
+                <td>{{complaint.workplace.classroom.number}}</td>
+                <td>{{complaint.workplace.number}}</td>
+                <td><a href="{% url 'delete_complaint' complaint.id %}">delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock content %}

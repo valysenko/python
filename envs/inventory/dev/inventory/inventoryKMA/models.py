@@ -79,8 +79,8 @@ class Task(models.Model):
 
 class Complaint(models.Model):
     id=models.AutoField(primary_key=True)
-    message = models.CharField(validators=[MinLengthValidator(0)], max_length=15)
-    unit_item = models.ForeignKey(Workplace, related_name="complaints", null=True)
+    message = models.CharField(validators=[MinLengthValidator(0)], max_length=500)
+    workplace = models.ForeignKey(Workplace, related_name="complaints", null=True)
     objects = ComplaintManager()
 
 

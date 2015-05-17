@@ -1,17 +1,30 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Permission, User, Group
-# from var_dump import var_dump
-# Create your views here.
+from django.views.generic import CreateView
+from django.contrib.auth.forms import UserCreationForm
+from django.core.urlresolvers import reverse_lazy
+
+
+class SignUpView(CreateView):
+    form_class = UserCreationForm
+    template_name = "signup.html"
+    success_url = reverse_lazy('index')
+
 
 
 def redirect_to_main(request):
+    # assistant_group, created = Group.objects.get_or_create(name='user')
+    # user = User.objects.create_user(first_name="Igor",last_name="Igorev",email="",username="igor")
+    # user.set_password("1")
+    # user.groups.add(assistant_group)
+    # user.save()
     if request.user.groups.filter(name='admin').exists():
         return redirect('/classrooms/list')
     elif request.user.groups.filter(name='assistant').exists():
         return redirect('/tasks/current')
     elif request.user.groups.filter(name='user').exists():
-        return redirect('/user')
+        return redirect('/classrooms/user/list')
     return redirect('/')
 
 

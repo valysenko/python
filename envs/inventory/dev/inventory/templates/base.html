@@ -44,7 +44,7 @@
                                 <a href="{% url 'add_classroom' %}">Classroom</a>
                             </li>
                             <li>
-                                <a href="">Add assistant from user</a>
+                                <a href="{% url 'find_user' %}">Add assistant from user</a>
                             </li>
                         </ul>
                     </li>
@@ -61,7 +61,7 @@
                                 <a href="{% url 'assistants_list' %}">Assistants list</a>
                             </li>
                             <li>
-                                <a href = ""> Complaints list </a>
+                                <a href = "{% url 'complaints_list' %}"> Complaints list </a>
                             </li>
                             <li>
                                 <a href="{% url 'unmanaged_classrooms_list' %} ">Unmanaged classrooms</a>
@@ -94,7 +94,8 @@
             {% if user.is_authenticated %}
                 <li><a href=" {% url 'inventory_logout' %} ">Logout</a></li>
             {% else %}
-                <li><a href="{% url 'inventory_login' %}">Login</a></li>
+                <li><a href="{% url 'user_signup' %}">Sign up</a> </li>
+                <li><a href="{% url 'inventory_login' %}">Sign in</a></li>
             {% endif %}
          </ul>
     </nav>

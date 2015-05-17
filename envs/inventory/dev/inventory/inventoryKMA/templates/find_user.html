@@ -1,0 +1,60 @@
+
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#em').on('keyup',function(){
+                if(this.value==""){
+                    $('.hr').remove();
+                }
+            });
+            $('#em').on('input',function(){
+                var value = this.value;
+                jQuery.ajax({
+                    type: 'GET',
+                    url:   'http://localhost:8000'+'/find/users/'+value+'',
+                    dataType: 'json',
+                    async: true,
+                    contentType: 'application/json',
+                    success: function(data) {
+                        $('.hr').remove();
+                        $.each(data, function(index, user) {
+                            $("#list").append("<a href='/assistant/create/"+index+"'"+"><p class='hr'> "+ user + "</p></a>");
+                        });
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+//                        alert(jqXHR+" "+textStatus + " "+ errorThrown)
+                    }
+                });
+            });
+        });
+    </script>
+
+
+  <!--<div class="container adding" >-->
+        <!--<h1>Find user by email</h1>-->
+        <!--<div class="well col-sm-6"   id="list" style="width:300px;height:300px;margin:auto;padding:auto;text-align:left;">-->
+             <!--<form style="padding-bottom:30px">-->
+               <!--<label for="em">Email:</label>-->
+               <!--<input type="text"  id="em" name="userLastName" class="form-control">-->
+           <!--</form>-->
+
+        <!--</div>-->
+    <!--</div>-->
+
+<div class="container" style="text-align:center">
+    <h3> Changing  user's role to assistant</h3>
+   <div  id="list" style="width:300px;height:300px;margin:auto;padding:auto;text-align:left;">
+       <form style="padding-bottom:30px">
+           <label for="em">Email:</label>
+           <input type="text"  id="em" name="userLastName" class="form-control">
+       </form>
+
+   </div>
+
+</div>
+
+{% endblock content %}

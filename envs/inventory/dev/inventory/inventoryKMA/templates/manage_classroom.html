@@ -2,17 +2,20 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <div class="adding" >
-        <h1>Manage classroom</h1>
-        <div class="well col-sm-6">
-            <form action="" method="post">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <button type="submit" class="btn btn-default preview-add-button">
-                            <span class="glyphicon glyphicon-plus"></span> Add
-                </button>
-            </form>
-
-        </div>
+    <div class="well" style="margin:auto;padding:auto;width:400px;margin-top:50px">
+        <fieldset>
+            <legend>
+                Manage classroom
+            </legend>
+            <div >
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-default preview-add-button">
+                                <span class="glyphicon glyphicon-plus"></span> Add
+                    </button>
+                </form>
+            </div>
+        </fieldset>
     </div>
 {% endblock content %}

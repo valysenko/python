@@ -1,0 +1,23 @@
+
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <div class="well" style="margin:auto;padding:auto;width:500px">
+        <fieldset>
+            <legend>
+                New complaint
+            </legend>
+            <div>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <input type="hidden" name="workplace_id" value="{{w_id}}">
+                    <button type="submit" class="btn btn-default preview-add-button">
+                                <span class="glyphicon glyphicon-plus"></span> Add
+                    </button>
+                </form>
+            </div>
+        </fieldset>
+    </div>
+{% endblock content %}

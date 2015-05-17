@@ -6,11 +6,13 @@ Please login
 {% endblock title %}
 
 {% block content %}
-    <div class="well col-sm-6">
-	<!--{% if form.errors %}-->
-	    <!--<p class="text-warning">Your username and password didn't match. Please try again.</p>-->
-	<!--{% endif %}-->
-        <div>
+    <div class="well" style="margin:auto;padding:auto;width:400px;margin-top:50px;margin-bottom:50px">
+
+	<fieldset>
+            <legend>
+                Sign in
+            </legend>
+        <div class="panel-body">
             <form role="form" class="form-horizontal" method="post" action="{% url 'inventory_login' %}">
                 {% csrf_token %}
                 {{ form|crispy }}
@@ -18,5 +20,6 @@ Please login
                 <input type="hidden" name="next" value="{{ next }}" />
             </form>
         </div>
+    </fieldset>
     </div>
 {% endblock content %}
